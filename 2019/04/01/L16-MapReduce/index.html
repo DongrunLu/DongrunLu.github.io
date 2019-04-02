@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Mapreduce,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="IntroductionMethodology for exploiting parallelism in computing clouds (racks of interconnected processors)  Motivation Beyond Search EnginesIn many of these applications, the data is extremely regula">
+<meta name="keywords" content="Mapreduce">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MapReduce">
+<meta property="og:url" content="http://yoursite.com/2019/04/01/L16-MapReduce/index.html">
+<meta property="og:site_name" content="Dongrun Lu Blog">
+<meta property="og:description" content="IntroductionMethodology for exploiting parallelism in computing clouds (racks of interconnected processors)  Motivation Beyond Search EnginesIn many of these applications, the data is extremely regula">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/Users/ryanlu/Library/Application%20Support/typora-user-images/image-20190317124401470.png">
+<meta property="og:image" content="http://yoursite.com/Users/ryanlu/Library/Application%20Support/typora-user-images/image-20190317124426999.png">
+<meta property="og:image" content="http://yoursite.com/Users/ryanlu/Library/Application%20Support/typora-user-images/image-20190317125605868.png">
+<meta property="og:image" content="http://yoursite.com/Users/ryanlu/Library/Application%20Support/typora-user-images/image-20190317130249874.png">
+<meta property="og:image" content="http://yoursite.com/Users/ryanlu/Library/Application%20Support/typora-user-images/image-20190317132351928.png">
+<meta property="og:image" content="http://yoursite.com/Users/ryanlu/Library/Application%20Support/typora-user-images/image-20190317134023384.png">
+<meta property="og:image" content="http://yoursite.com/Users/ryanlu/Library/Application%20Support/typora-user-images/image-20190317135024815.png">
+<meta property="og:image" content="http://yoursite.com/Users/ryanlu/Library/Application%20Support/typora-user-images/image-20190317141122016.png">
+<meta property="og:image" content="http://yoursite.com/Users/ryanlu/Library/Application%20Support/typora-user-images/image-20190317142831463.png">
+<meta property="og:updated_time" content="2019-04-02T03:59:18.374Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="MapReduce">
+<meta name="twitter:description" content="IntroductionMethodology for exploiting parallelism in computing clouds (racks of interconnected processors)  Motivation Beyond Search EnginesIn many of these applications, the data is extremely regula">
+<meta name="twitter:image" content="http://yoursite.com/Users/ryanlu/Library/Application%20Support/typora-user-images/image-20190317124401470.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/04/01/L16-MapReduce/">
+
+
+
+
+
+  <title>MapReduce | Dongrun Lu Blog</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Dongrun Lu Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/01/L16-MapReduce/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Dongrun Lu Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">MapReduce</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-04-01T20:59:18-07:00">
+                2019-04-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/backends/" itemprop="url" rel="index">
+                    <span itemprop="name">backends</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/04/01/L16-MapReduce/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/04/01/L16-MapReduce/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2019/04/01/L16-MapReduce/" class="leancloud_visitors" data-flag-title="MapReduce">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">Visitors&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h3><p>Methodology for exploiting parallelism in computing clouds (racks of interconnected processors) </p>
+<h3 id="Motivation-Beyond-Search-Engines"><a href="#Motivation-Beyond-Search-Engines" class="headerlink" title="Motivation Beyond Search Engines"></a>Motivation Beyond Search Engines</h3><p>In many of these applications, the data is extremely regular, and there is ample opportunity to <strong>exploit parallelism</strong>.</p>
+<h3 id="MapReduce-used-by-Search-Engines"><a href="#MapReduce-used-by-Search-Engines" class="headerlink" title="MapReduce used by Search Engines"></a>MapReduce used by Search Engines</h3><p>Google: </p>
+<ul>
+<li>Search Index</li>
+<li>Article clustering for Google News</li>
+<li>Statistical machine translation</li>
+</ul>
+<p>Yahoo:</p>
+<ul>
+<li>Search</li>
+<li>Spam detection </li>
+</ul>
+<h3 id="Hadoop"><a href="#Hadoop" class="headerlink" title="Hadoop"></a>Hadoop</h3><p>Java based for distributed storage and distributed processing.</p>
+<p>For hardware failures are common and should be automatically handled by the framework.</p>
+<p>Core: storage part : Hadoop Distributed File System (HDFS) and a processing part called MapReduce.</p>
+<h3 id="Large-Data-Requires-Large-Distributed-Files"><a href="#Large-Data-Requires-Large-Distributed-Files" class="headerlink" title="Large Data Requires Large Distributed Files"></a>Large Data Requires Large Distributed Files</h3><ul>
+<li>File systems have to change to handle much larger sizes, and replication of data</li>
+<li>Assumptions<ul>
+<li>Files are distributed (DFS)<ul>
+<li>Google File System: files divided into chunks, often read or appended to; rarely overwritten, distributed across clusters of machines</li>
+<li>Hadoop Distributed File System</li>
+<li>CloudStore by Kosmiz</li>
+</ul>
+</li>
+<li>Files are rarely updated, <strong>often read</strong> and sometimes appended to </li>
+<li>Files are divided into chunks and chunks are replicated</li>
+</ul>
+</li>
+</ul>
+<h3 id="Parallelization-is-Hard"><a href="#Parallelization-is-Hard" class="headerlink" title="Parallelization is Hard"></a>Parallelization is Hard</h3><p>Parallelization is easy if processing can be cleanly split into n units</p>
+<p><img src="/Users/ryanlu/Library/Application Support/typora-user-images/image-20190317124401470.png" alt="image-20190317124401470"></p>
+<p>but</p>
+<p><img src="/Users/ryanlu/Library/Application Support/typora-user-images/image-20190317124426999.png" alt="image-20190317124426999"></p>
+<h3 id="Programming-with-Multiple-Threads-Poses-Challenges"><a href="#Programming-with-Multiple-Threads-Poses-Challenges" class="headerlink" title="Programming with Multiple Threads Poses Challenges"></a>Programming with Multiple Threads Poses Challenges</h3><p>when we run a multithreaded propragm. we don’t know that order threds run in, nor do we know when they will interrupt one another.</p>
+<h3 id="Unpredictability-on-Many-Levels"><a href="#Unpredictability-on-Many-Levels" class="headerlink" title="Unpredictability on Many Levels"></a>Unpredictability on Many Levels</h3><p>Pulling work units from a queue</p>
+<p>Reporting work back to master unit</p>
+<p>Telling another thread that it can begin the next phase of processing</p>
+<h3 id="How-MapReduce-Solves-the-Parallelization-Problems"><a href="#How-MapReduce-Solves-the-Parallelization-Problems" class="headerlink" title="How MapReduce Solves the Parallelization Problems"></a>How MapReduce Solves the Parallelization Problems</h3><p>Automatic parallelization of code &amp; distribution across multiple processors.</p>
+<p>Fault tolerance in the event of failure of one or more nodes</p>
+<p>I/O shcduling</p>
+<p>Monitoring &amp; Status updates</p>
+<h3 id="Typical-MapReduce-Cluster-Architecture"><a href="#Typical-MapReduce-Cluster-Architecture" class="headerlink" title="Typical MapReduce Cluster Architecture"></a>Typical MapReduce Cluster Architecture</h3><p>Each rack of cpu’s contains between 16-64 nodes</p>
+<p>Nodes within a single rack are connected by gigabyte Ethernet</p>
+<p>Each rack is connected to another rack by a switch with speeds of 2-10 Gbps</p>
+<p>Individual cpu’s can fail; switches between racks can fail</p>
+<p><img src="/Users/ryanlu/Library/Application Support/typora-user-images/image-20190317125605868.png" alt="image-20190317125605868"></p>
+<h3 id="Distributed-File-Systems"><a href="#Distributed-File-Systems" class="headerlink" title="Distributed File Systems"></a>Distributed File Systems</h3><p>cluster computing: a collection of compute nodes stored on racks with racks connected by switches</p>
+<p>The inter-rack bandwidth is generally faster than the intra-rack bandwidth</p>
+<p>Assumed that components will ofen fail</p>
+<ul>
+<li>loss of single compute node</li>
+<li>loss of a single disk, causing a node to fail</li>
+<li>loss of an entire rack</li>
+</ul>
+<p>Solution:</p>
+<ul>
+<li>Files are stored redundantly</li>
+<li>Computations are diveided into tasks such taht if any one task fails it can be restarted without affecting other tasks</li>
+<li>machines are constantly pinged</li>
+</ul>
+<h3 id="Hadoop-Distributed-File-System"><a href="#Hadoop-Distributed-File-System" class="headerlink" title="Hadoop Distributed File System"></a>Hadoop Distributed File System</h3><p><img src="/Users/ryanlu/Library/Application Support/typora-user-images/image-20190317130249874.png" alt="image-20190317130249874"></p>
+<p>break the file</p>
+<h3 id="Hadoop-Operates"><a href="#Hadoop-Operates" class="headerlink" title="Hadoop Operates"></a>Hadoop Operates</h3><p>HDFS stores each file in a sequence of block</p>
+<ul>
+<li>Blocks of the files are replicated</li>
+<li>Block size and replication factor are configurable</li>
+</ul>
+<p>HDFS optimizes replica placement so <strong>some blocks</strong> for the <strong>same file</strong> are located on the <strong>same rack</strong></p>
+<p>Master node receives “heart beat” and block reports</p>
+<p>HDFS communicates with nodes using TCP/IP</p>
+<p>Client programs use RPC to communicate</p>
+<p>HDFS <strong>NameNode</strong> writes an EditLog of all transaction</p>
+<p>HDFS <strong>DataNodes</strong> manages its files and their replicas</p>
+<h3 id="Hadoop-Architecture"><a href="#Hadoop-Architecture" class="headerlink" title="Hadoop Architecture"></a>Hadoop Architecture</h3><p><img src="/Users/ryanlu/Library/Application Support/typora-user-images/image-20190317132351928.png" alt="image-20190317132351928"></p>
+<ul>
+<li>Job tracker</li>
+<li>Task tracker</li>
+<li>DFS</li>
+<li>Each TaskTracker starts the map phase by extracting the input from the splits</li>
+<li>For each record parsed by InputFormat, user procided map function is invoked emitting key/value pair</li>
+<li>When the map task completes TaskTracker notifies JobTracker which then starts the reduce phase</li>
+</ul>
+<h3 id="Map-Reduce-Beginings"><a href="#Map-Reduce-Beginings" class="headerlink" title="Map/Reduce - Beginings"></a>Map/Reduce - Beginings</h3><ul>
+<li>Easy to distribute computation across nodes</li>
+<li>Nice retry/failure semantics</li>
+</ul>
+<h3 id="Map-and-Reduce-in-LISP-Scheme"><a href="#Map-and-Reduce-in-LISP-Scheme" class="headerlink" title="Map and Reduce in LISP (Scheme)"></a>Map and Reduce in LISP (Scheme)</h3><ul>
+<li>(map f list [list2, list3, …]): General formulation<ul>
+<li>(map square ‘1 2 3 4’)</li>
+</ul>
+</li>
+<li>(reduce f id list)<ul>
+<li>reduce + 0 ‘(1 4 9 16)</li>
+</ul>
+</li>
+</ul>
+<h3 id="What-is-MapReduce"><a href="#What-is-MapReduce" class="headerlink" title="What is MapReduce"></a>What is MapReduce</h3><p>a programming model that generically works this way:</p>
+<ul>
+<li>A map function extracts some intelligence from raw data</li>
+<li>A reduce function aggregates the data output by the map</li>
+<li>Spicify the computation in terms of a map and a reduce function</li>
+<li>Underlying runtime system automatically <strong>parallelizes the computation across large-scale clusters of machines</strong> and</li>
+<li>Underlying system also <strong>handles machine failures</strong>, efficient communications and performance issues</li>
+</ul>
+<h3 id="The-Map-Reduce-Paradigm"><a href="#The-Map-Reduce-Paradigm" class="headerlink" title="The Map/Reduce Paradigm"></a>The Map/Reduce Paradigm</h3><p>A large number of records are broken into segments</p>
+<ul>
+<li>Map: extract something of interest from each segment</li>
+<li>Group and sort intermediate results from each segment</li>
+<li>Reduce: aggregate intermediate results</li>
+<li>Generate final output</li>
+</ul>
+<p>Key idea: </p>
+<ul>
+<li>Re-phrase problems in such a way that the input can be divided into parts and </li>
+<li>operated on in parallel </li>
+<li>the results combined to produce a solution to the original problem</li>
+</ul>
+<h3 id="Map-Reduce-Overview"><a href="#Map-Reduce-Overview" class="headerlink" title="Map/Reduce Overview"></a>Map/Reduce Overview</h3><ul>
+<li>must write 2 functions called map and reduce</li>
+<li>system manages the parallel execution and coordination of tasks; it is all done automatically</li>
+<li>map-reduce computation proceeds as follows:<ul>
+<li>some number of map tasks each are given one or more chunks to process</li>
+<li>these tasks turn the chunk into a sequence of key-value pairs; the way the pais are produced depends upon the code for map function</li>
+<li>Key-value pairs from each Map task are collected by a master controller and sorted by key; <strong>keys are divided among all the Reduce tasks</strong>, so all key-value pairs with the same key wind up at the same reduce task</li>
+<li>Reduce tasks work on one key at a time, and combine all the values associated with that key in some way; the manner of combination depends upon the reduce code</li>
+</ul>
+</li>
+</ul>
+<h3 id="Schematic-of-a-map-reduce-computation"><a href="#Schematic-of-a-map-reduce-computation" class="headerlink" title="Schematic of a map-reduce computation"></a>Schematic of a map-reduce computation</h3><p><img src="/Users/ryanlu/Library/Application Support/typora-user-images/image-20190317134023384.png" alt="image-20190317134023384"></p>
+<h3 id="A-MapReduce-Example-Counting-Word-Occurrence"><a href="#A-MapReduce-Example-Counting-Word-Occurrence" class="headerlink" title="A MapReduce Example - Counting Word Occurrence"></a>A MapReduce Example - Counting Word Occurrence</h3><ul>
+<li>Counting the number of occurrences for each word in a collection of documents</li>
+<li>The input file is a repository of documents</li>
+<li>Each document is an element</li>
+<li>The map function<ul>
+<li>Use keys of type String (the words obtained by parsing) w1, w2, … </li>
+<li>Use values that are integers</li>
+<li>Reads a document and breaks it into its sequence of words</li>
+<li>Output key-value pairs where the value is always 1 (w1,1),<br>(w2,1),…,(wn,1)</li>
+</ul>
+</li>
+<li>map task handles many documents so its output will be more than the sequence for one document</li>
+<li>If a word w appears m times among all documents, then there will be m key-value pairs (w, 1) in the output</li>
+</ul>
+<h3 id="Count-word-occurrence-pseudo-code"><a href="#Count-word-occurrence-pseudo-code" class="headerlink" title="Count word occurrence pseudo-code"></a>Count word occurrence pseudo-code</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">map(String input_key, String input_value)</span><br><span class="line"><span class="comment">// input_key: doc name</span></span><br><span class="line"><span class="comment">// input_value: doc contents</span></span><br><span class="line"><span class="keyword">for</span> each word w in input_value:</span><br><span class="line">EmitIntermediate(w, <span class="string">"1"</span>)</span><br><span class="line">  </span><br><span class="line"></span><br><span class="line">reduce(String output_key, Iterator intermediate_values)</span><br><span class="line"><span class="comment">// output_key: a word</span></span><br><span class="line"><span class="comment">// output_values: a list of counts</span></span><br><span class="line"><span class="keyword">int</span> result = <span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> each v in intermediate_values:</span><br><span class="line">result += ParseInt(v);</span><br><span class="line">Emit(AsString(result));</span><br></pre></td></tr></table></figure>
+<p><img src="/Users/ryanlu/Library/Application Support/typora-user-images/image-20190317135024815.png" alt="image-20190317135024815"></p>
+<h3 id="Explannation-of-Grouping-and-Aggregation"><a href="#Explannation-of-Grouping-and-Aggregation" class="headerlink" title="Explannation of Grouping and Aggregation"></a>Explannation of Grouping and Aggregation</h3><h4 id="Map-Master-task"><a href="#Map-Master-task" class="headerlink" title="Map/Master task"></a>Map/Master task</h4><ul>
+<li>There is a master controller process that knows how many Reduce tasks there will be, say r</li>
+<li>The user defines r</li>
+<li>The master controller picks a hash function that applies to keys and produces a bucket number from 0 to r-1</li>
+<li>Each key output by a Map task is hashed and its key-value pair is <strong>put in one of r local files</strong><ul>
+<li>Each file will be processed by a Reduce task</li>
+</ul>
+</li>
+<li>After all Map tasks have completed successfully, the master controller merges the file from each Map task that are destined for a particular Reduce task and feeds the merged file to that process</li>
+<li>For each key k, the input to the Reduce task that handles key k is a pair (k, [v1,…,vn]) where <strong>(k,v1),(k,v2),…,(k,vn) are all the key-value pairs with key k coming from all the Map tasks</strong> </li>
+</ul>
+<h4 id="Reduce"><a href="#Reduce" class="headerlink" title="Reduce"></a>Reduce</h4><ul>
+<li>Reduce is written to take pairs consisting of a key and a list of associated values, and combines them in some way</li>
+<li>Reduce output is a sequence of key-value pairs consisting of each input key k paired with the combined value</li>
+<li>Outputs from all Reduce tasks are merged into a single file</li>
+<li>Reduce adds up all the values and outputs a sequence of (w, m) pairs where w is a word that appears at least once in the documents and m is the total number of occurrences</li>
+<li>Reduce is generally associative and commutative implying values can be combined in any order yielding the same result</li>
+</ul>
+<p><img src="/Users/ryanlu/Library/Application Support/typora-user-images/image-20190317141122016.png" alt="image-20190317141122016"></p>
+<p>Master handle these functions</p>
+<h3 id="Parallel-Excution-of-Map-Reduce"><a href="#Parallel-Excution-of-Map-Reduce" class="headerlink" title="Parallel Excution of Map-Reduce"></a>Parallel Excution of Map-Reduce</h3><ul>
+<li>User program forks a Master controller process and some number of Worker processes at different compute nodes</li>
+<li>A worker handles either Map tasks or Reduce tasks, but not both</li>
+<li>The Master must<ul>
+<li>Create some number of Map and Reduce tasks</li>
+<li>These tasks are assigned to Worker processes by the Master</li>
+<li>Typically there is one Map task for every chunk of the input</li>
+<li>Keeps track of the status of each Map and Reduce task (states are: idle, executing on a Worker, completed)</li>
+</ul>
+</li>
+<li>Each Map task is assigned one or more chunks of the input files and executes on it the code</li>
+<li>THe Map task creates a file for each Reduce task on the local disk of the Workder that executes the Map task</li>
+<li>The Master is told of the location and sizes of each of these files and the Reduce task for which each is destined.</li>
+</ul>
+<h3 id="Fault-Tolerance"><a href="#Fault-Tolerance" class="headerlink" title="Fault Tolerance"></a>Fault Tolerance</h3><ul>
+<li>If a task crashes<ul>
+<li>Retry on another node<ul>
+<li>OK for map because it had no dependencies</li>
+<li>OK for reduce because map outputs are on disk</li>
+</ul>
+</li>
+<li>If the same task repeatedly fails, fail the job or ignore that input block</li>
+</ul>
+</li>
+<li>If a node crashes<ul>
+<li>Relaunch its current tasks on other nodes</li>
+<li>Relaunch any maps the node previously ran<ul>
+<li>Necessary because their output files were lost along with the crashed node</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>If a task is going slowly (straggler):<ul>
+<li>Launch second copy of task on another node</li>
+<li>Take the output of whichever copy finishes first, and kill the other one</li>
+</ul>
+</li>
+</ul>
+<h3 id="Coping-with-Node"><a href="#Coping-with-Node" class="headerlink" title="Coping with Node"></a>Coping with Node</h3><p>Worst case: the compute node where the Master is executing fails</p>
+<ul>
+<li>Res: the entire map-reduce job must be restarted</li>
+</ul>
+<p>Other failures are less severe and are handled by the Master</p>
+<p>The compute node of a Map worker fails</p>
+<ul>
+<li>this is detected by the master and all map tasks that were assigned are re-done</li>
+<li>The Master sets the status of each Map task to idle and re-schedules them when a worker becomes available</li>
+<li>The Master informs each Reduce task of the location of its new input</li>
+</ul>
+<p>The compute node of a Reduce worker fails</p>
+<ul>
+<li>The Master sets the status of its currently executing Reduce tasks to idle and they will be re-scheduled on another reduce worker later</li>
+</ul>
+<p><img src="/Users/ryanlu/Library/Application Support/typora-user-images/image-20190317142831463.png" alt="image-20190317142831463"></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Mapreduce/" rel="tag"># Mapreduce</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/04/01/Parameters in NN/" rel="next" title="LSTM 参数计算">
+                <i class="fa fa-chevron-left"></i> LSTM 参数计算
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">John Doe</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="ludongrun8685962@gmail" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-globe"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Introduction"><span class="nav-number">1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Motivation-Beyond-Search-Engines"><span class="nav-number">2.</span> <span class="nav-text">Motivation Beyond Search Engines</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MapReduce-used-by-Search-Engines"><span class="nav-number">3.</span> <span class="nav-text">MapReduce used by Search Engines</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hadoop"><span class="nav-number">4.</span> <span class="nav-text">Hadoop</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Large-Data-Requires-Large-Distributed-Files"><span class="nav-number">5.</span> <span class="nav-text">Large Data Requires Large Distributed Files</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Parallelization-is-Hard"><span class="nav-number">6.</span> <span class="nav-text">Parallelization is Hard</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Programming-with-Multiple-Threads-Poses-Challenges"><span class="nav-number">7.</span> <span class="nav-text">Programming with Multiple Threads Poses Challenges</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Unpredictability-on-Many-Levels"><span class="nav-number">8.</span> <span class="nav-text">Unpredictability on Many Levels</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#How-MapReduce-Solves-the-Parallelization-Problems"><span class="nav-number">9.</span> <span class="nav-text">How MapReduce Solves the Parallelization Problems</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Typical-MapReduce-Cluster-Architecture"><span class="nav-number">10.</span> <span class="nav-text">Typical MapReduce Cluster Architecture</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Distributed-File-Systems"><span class="nav-number">11.</span> <span class="nav-text">Distributed File Systems</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hadoop-Distributed-File-System"><span class="nav-number">12.</span> <span class="nav-text">Hadoop Distributed File System</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hadoop-Operates"><span class="nav-number">13.</span> <span class="nav-text">Hadoop Operates</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hadoop-Architecture"><span class="nav-number">14.</span> <span class="nav-text">Hadoop Architecture</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Map-Reduce-Beginings"><span class="nav-number">15.</span> <span class="nav-text">Map/Reduce - Beginings</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Map-and-Reduce-in-LISP-Scheme"><span class="nav-number">16.</span> <span class="nav-text">Map and Reduce in LISP (Scheme)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#What-is-MapReduce"><span class="nav-number">17.</span> <span class="nav-text">What is MapReduce</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#The-Map-Reduce-Paradigm"><span class="nav-number">18.</span> <span class="nav-text">The Map/Reduce Paradigm</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Map-Reduce-Overview"><span class="nav-number">19.</span> <span class="nav-text">Map/Reduce Overview</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Schematic-of-a-map-reduce-computation"><span class="nav-number">20.</span> <span class="nav-text">Schematic of a map-reduce computation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#A-MapReduce-Example-Counting-Word-Occurrence"><span class="nav-number">21.</span> <span class="nav-text">A MapReduce Example - Counting Word Occurrence</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Count-word-occurrence-pseudo-code"><span class="nav-number">22.</span> <span class="nav-text">Count word occurrence pseudo-code</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Explannation-of-Grouping-and-Aggregation"><span class="nav-number">23.</span> <span class="nav-text">Explannation of Grouping and Aggregation</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Map-Master-task"><span class="nav-number">23.1.</span> <span class="nav-text">Map/Master task</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Reduce"><span class="nav-number">23.2.</span> <span class="nav-text">Reduce</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Parallel-Excution-of-Map-Reduce"><span class="nav-number">24.</span> <span class="nav-text">Parallel Excution of Map-Reduce</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Fault-Tolerance"><span class="nav-number">25.</span> <span class="nav-text">Fault Tolerance</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Coping-with-Node"><span class="nav-number">26.</span> <span class="nav-text">Coping with Node</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'JTTVoUYJt3dGtRE1Om4klqJ9-gzGzoHsz',
+        appKey: 'sOLPSD9aKB0Vi9O2T0tY0Oj6',
+        placeholder: 'Just go go',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("JTTVoUYJt3dGtRE1Om4klqJ9-gzGzoHsz", "sOLPSD9aKB0Vi9O2T0tY0Oj6");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+</body>
+</html>
