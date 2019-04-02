@@ -95,7 +95,7 @@
     root: '/',
     scheme: 'Gemini',
     version: '5.1.4',
-    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    sidebar: {"position":"left","display":"hide","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
     fancybox: true,
     tabs: true,
     motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
@@ -308,6 +308,17 @@
 
           
           
+             <span id="/2019/04/01/Parameters in NN/" class="leancloud_visitors" data-flag-title>
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">Visitors&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
 
           
 
@@ -330,67 +341,25 @@
       
         
           
-            <hr>
-<p>title: LSTM 参数计算<br>Date: 2019-04-01 18:54:08<br>tags:</p>
-<pre><code>- NLP
+          
+title: LSTM 参数计算Date: 2019-04-01 18:54:08tags:
+- NLP
 - LSTM
 - Seq2seq
 - RNN
-</code></pre><p>Categories:</p>
-<pre><code>- NLP
-</code></pre><h3 id="RNN-参数计算"><a href="#RNN-参数计算" class="headerlink" title="RNN 参数计算"></a>RNN 参数计算</h3><p><img src="https://i.stack.imgur.com/EhhBD.jpg" alt="a basic RNN"></p>
-<p>$s_t = tanh(W_s[x_t, h_{t-1}]+b_s)$</p>
-<p>$o_t = \sigma(W_os_t)$ </p>
-<p>Example:  Input $x_t$ is of size $n×1$, and there are $d$ memory cells, the parameters $p$:</p>
-<p>$p = \underbrace{(d \times (n+d) + d)}_{s_t} + \underbrace{(d \times n)}_{o_t} $ </p>
-<h3 id="Seq2seq-with-Attention"><a href="#Seq2seq-with-Attention" class="headerlink" title="Seq2seq with Attention"></a>Seq2seq with Attention</h3><p>A vanilla RNN seq2seq translation model. </p>
-<ul>
-<li>There is one encoder layer and one decoder layer, both the encoder and decoder are unidirectional simple RNNs</li>
-<li>Input and output embeddings are not shared</li>
-<li>Attention is implemented via simple dot product</li>
-<li>Input and output embeddings are not shared</li>
-</ul>
-<p>The source vocabulary size is $v_s$</p>
-<p>The target vocabulary size is $v_t$</p>
-<p>The source embedding size is $e_s$</p>
-<p>The target embedding size is $e_t$</p>
-<p>The encoder and decoder hidden state dimensions are each $h$.</p>
-<p>$h_{s} = tanh(W_s[x_t, h_{t-1}]+b_{decoder})$</p>
-<p>$h_{t} = tanh(W_s[x_t, h_{t-1}]+b_{encoder})$ </p>
-<p>$e = [h_t^Th_{e_1}, …h_th_{e_N}]=u^Tv$ </p>
-<p>$a = softmax(e)$</p>
-<p>$o_t = \sigma(W_o[h_t, a_t]+b_o)$  </p>
-<p>$a_t = \sum a_i h_i$ </p>
-<p>Simple dot product = no additional parameters</p>
-<p>$p_{encoder} = (h \times (e_s + h) + h) $ </p>
-<p>$p_{decoder} = (h \times (e_t + h) + h) + (v_t \times (\underbrace{h_s}_{attention} + h_t)+v_t)$</p>
-<p>$p_{e_s} = e_s \times v_s, p_{e_t} =e_t \times v_t$ </p>
-<p>$[h_{left};h_{right}]$ </p>
-<p>Given a 1-level seq2seq vanilla rnn model with matrix attention, 14,482 source vocabulary words, 48,135 target vocabulary words, 178-dimension source embeddings, 117-dimension target embeddings, bidirectional encoder with 945 hidden units in each direction, decoder with 2x945 hidden units, attentional units used at the softmax layer only, how many parameters are in the model?</p>
-<p>$e = W[h_t^Th_{e_1}, …h_th_{e_N}]=u^TWv$ </p>
-<h4 id="LSTM-参数计算"><a href="#LSTM-参数计算" class="headerlink" title="LSTM 参数计算"></a>LSTM 参数计算</h4><p>$f_t = \sigma_g (W_f [x_t,h_{t-1}] + b_f)$ </p>
-<p>$i_t = \sigma_g (W_i [x_t,h_{t-1}] + b_i)$</p>
-<p>$\bar{c}_t = \tanh (W_c [x_t,h_{t-1}]  + b_c)$  </p>
-<p>$c_t = f_t<em>c_{t-1} + i_t</em>\bar{c}_t $</p>
-<p>$o_t = \sigma_g (W_o [x_t,h_{t-1}] + b_o)$ </p>
-<p>$h_t = o_t \sigma_h(c_t) $ </p>
-<p>Example:</p>
-<p>Input $x_t$ is of size $n×1$, and there are $d$ memory cells, the parameters $p$:</p>
-<h5 id="Step1-Forget"><a href="#Step1-Forget" class="headerlink" title="Step1: Forget"></a>Step1: Forget</h5><p>$f_t = \sigma_g (W_f [x_t,h_{t-1}] + b_f)$ </p>
-<p>$p_{forget} = d \times (n + d) + d$</p>
-<h5 id="Step2-Update"><a href="#Step2-Update" class="headerlink" title="Step2: Update"></a>Step2: Update</h5><p>$i_t = \sigma_g (W_i [x_t,h_{t-1}] + b_i)$</p>
-<p>$\bar{c}_t = \tanh (W_c [x_t,h_{t-1}]  + b_c)$  </p>
-<p>$c_t = f_t<em>c_{t-1} + i_t</em>\bar{c}_t $</p>
-<p>$p_{update} = 2 \times (d \times (n+d) +d)$</p>
-<h5 id="Step3-Output"><a href="#Step3-Output" class="headerlink" title="Step3: Output"></a>Step3: Output</h5><p>$o_t = \sigma_g (W_o [x_t,h_{t-1}] + b_o)$ </p>
-<p>$h_t = o_t \sigma_h(c_t) ​$</p>
-<p>$p_o = d \times(n+d) + d​$ </p>
-<p>$p_{total}= p_{forget} + p_{update} + p_{out}=4(d\times (n+d)+d)) = 4((n+1)d + d^2)$ </p>
-<p>$p_{total}= p_{forget} + p_{update} + p_{out}=4(d\times (n+d)+d)) = 4V((n+1)d + d^2)$ </p>
-<p><a href="https://www.cnblogs.com/wushaogui/p/9176617.html" target="_blank" rel="noopener">https://www.cnblogs.com/wushaogui/p/9176617.html</a></p>
-<p><a href="https://datascience.stackexchange.com/questions/10615/number-of-parameters-in-an-lstm-model" target="_blank" rel="noopener">https://datascience.stackexchange.com/questions/10615/number-of-parameters-in-an-lstm-model</a></p>
-
-          
+Categories:
+- NLP
+RNN 参数计算
+$s_t = tanh(W_s[x_t, h_{t-1}]+b_s)$
+$o_t = \si
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/04/01/Parameters in NN/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -518,6 +487,17 @@
 
           
           
+             <span id="/2019/04/01/test/" class="leancloud_visitors" data-flag-title="test">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">Visitors&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
 
           
 
@@ -540,8 +520,15 @@
       
         
           
-            <h1 id="what-is-blog"><a href="#what-is-blog" class="headerlink" title="what is blog"></a>what is blog</h1>
+          what is blog
           
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/04/01/test/#more" rel="contents">
+              Read more &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -876,6 +863,113 @@
 
 
   
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("JTTVoUYJt3dGtRE1Om4klqJ9-gzGzoHsz", "sOLPSD9aKB0Vi9O2T0tY0Oj6");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
 
   
 
