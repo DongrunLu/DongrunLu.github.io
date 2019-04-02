@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT">
+  <meta name="keywords" content="NLP,LSTM,Seq2seq,RNN,">
 
 
 
@@ -79,18 +79,19 @@
 
 
 
-<meta name="description" content="title: LSTM 参数计算Date: 2019-04-01 18:54:08tags: - NLP - LSTM - Seq2seq - RNN Categories: - NLP RNN 参数计算 $s_t = tanh(W_s[x_t, h_{t-1}]+b_s)$ $o_t = \sigma(W_os_t)$  Example:  Input $x_t$ is of size $n×">
+<meta name="description" content="RNN 参数计算 $s_t = tanh(W_s[x_t, h_{t-1}]+b_s)$ $o_t = \sigma(W_os_t)$  Example:  Input $x_t$ is of size $n×1$, and there are $d$ memory cells, the parameters $p$: $p = \underbrace{(d \times (n+d) + d)}_">
+<meta name="keywords" content="NLP,LSTM,Seq2seq,RNN">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Dongrun Lu Blog">
+<meta property="og:title" content="LSTM 参数计算">
 <meta property="og:url" content="http://yoursite.com/2019/04/01/Parameters in NN/index.html">
 <meta property="og:site_name" content="Dongrun Lu Blog">
-<meta property="og:description" content="title: LSTM 参数计算Date: 2019-04-01 18:54:08tags: - NLP - LSTM - Seq2seq - RNN Categories: - NLP RNN 参数计算 $s_t = tanh(W_s[x_t, h_{t-1}]+b_s)$ $o_t = \sigma(W_os_t)$  Example:  Input $x_t$ is of size $n×">
+<meta property="og:description" content="RNN 参数计算 $s_t = tanh(W_s[x_t, h_{t-1}]+b_s)$ $o_t = \sigma(W_os_t)$  Example:  Input $x_t$ is of size $n×1$, and there are $d$ memory cells, the parameters $p$: $p = \underbrace{(d \times (n+d) + d)}_">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://i.stack.imgur.com/EhhBD.jpg">
-<meta property="og:updated_time" content="2019-04-02T03:22:29.744Z">
+<meta property="og:updated_time" content="2019-04-02T03:54:45.826Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Dongrun Lu Blog">
-<meta name="twitter:description" content="title: LSTM 参数计算Date: 2019-04-01 18:54:08tags: - NLP - LSTM - Seq2seq - RNN Categories: - NLP RNN 参数计算 $s_t = tanh(W_s[x_t, h_{t-1}]+b_s)$ $o_t = \sigma(W_os_t)$  Example:  Input $x_t$ is of size $n×">
+<meta name="twitter:title" content="LSTM 参数计算">
+<meta name="twitter:description" content="RNN 参数计算 $s_t = tanh(W_s[x_t, h_{t-1}]+b_s)$ $o_t = \sigma(W_os_t)$  Example:  Input $x_t$ is of size $n×1$, and there are $d$ memory cells, the parameters $p$: $p = \underbrace{(d \times (n+d) + d)}_">
 <meta name="twitter:image" content="https://i.stack.imgur.com/EhhBD.jpg">
 
 
@@ -127,7 +128,7 @@
 
 
 
-  <title> | Dongrun Lu Blog</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>LSTM 参数计算 | Dongrun Lu Blog</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
@@ -271,7 +272,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline"></h1>
+          <h1 class="post-title" itemprop="name headline">LSTM 参数计算</h1>
         
 
         <div class="post-meta">
@@ -283,7 +284,7 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-04-01T20:22:29-07:00">
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-04-01T20:54:45-07:00">
                 2019-04-01
               </time>
             
@@ -311,7 +312,7 @@
 
           
           
-             <span id="/2019/04/01/Parameters in NN/" class="leancloud_visitors" data-flag-title>
+             <span id="/2019/04/01/Parameters in NN/" class="leancloud_visitors" data-flag-title="LSTM 参数计算">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -342,15 +343,7 @@
       
 
       
-        <hr>
-<p>title: LSTM 参数计算<br>Date: 2019-04-01 18:54:08<br>tags:</p>
-<pre><code>- NLP
-- LSTM
-- Seq2seq
-- RNN
-</code></pre><p>Categories:</p>
-<pre><code>- NLP
-</code></pre><h3 id="RNN-参数计算"><a href="#RNN-参数计算" class="headerlink" title="RNN 参数计算"></a>RNN 参数计算</h3><p><img src="https://i.stack.imgur.com/EhhBD.jpg" alt="a basic RNN"></p>
+        <h3 id="RNN-参数计算"><a href="#RNN-参数计算" class="headerlink" title="RNN 参数计算"></a>RNN 参数计算</h3><p><img src="https://i.stack.imgur.com/EhhBD.jpg" alt="a basic RNN"></p>
 <p>$s_t = tanh(W_s[x_t, h_{t-1}]+b_s)$</p>
 <p>$o_t = \sigma(W_os_t)$ </p>
 <p>Example:  Input $x_t$ is of size $n×1$, and there are $d$ memory cells, the parameters $p$:</p>
@@ -415,6 +408,18 @@
     
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/NLP/" rel="tag"># NLP</a>
+          
+            <a href="/tags/LSTM/" rel="tag"># LSTM</a>
+          
+            <a href="/tags/Seq2seq/" rel="tag"># Seq2seq</a>
+          
+            <a href="/tags/RNN/" rel="tag"># RNN</a>
+          
+        </div>
       
 
       
@@ -535,7 +540,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">6</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
